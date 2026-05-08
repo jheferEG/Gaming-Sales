@@ -5,6 +5,7 @@ import RaceBoard from './components/RaceBoard'
 import Leaderboard from './components/Leaderboard'
 import ActivityFeed from './components/ActivityFeed'
 import GoalCelebration from './components/GoalCelebration'
+import DeptRanking from './components/DeptRanking'
 import { useDealsData } from './hooks/useDealsData'
 import { useEngineSound } from './hooks/useEngineSound'
 import { DEPT_TABS } from './config'
@@ -73,6 +74,7 @@ export default function App() {
               />
             </div>
             <div className="xl:w-72 flex-shrink-0 space-y-5">
+              <DeptRanking agents={agents} />
               <Leaderboard agents={filteredAgents} />
               <ActivityFeed recentDeals={recentDeals} />
             </div>

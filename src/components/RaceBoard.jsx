@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AgentRaceRow from './AgentRaceRow'
+import DeptScoreboard from './DeptScoreboard'
 import { DEPARTMENTS, DEPT_TABS } from '../config'
 
 function DeptGroupHeader({ deptKeys, agents, color, glow, name }) {
@@ -141,6 +142,9 @@ export default function RaceBoard({ agents, selectedTab, newDealAgentId }) {
                   isNew={newDealAgentId === agent.id}
                 />
               ))}
+
+              {/* Scoreboard table with deal won column */}
+              <DeptScoreboard agents={group.sortedAgents} color={group.color} />
             </motion.section>
           )
         )}

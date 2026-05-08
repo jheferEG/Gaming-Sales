@@ -3,12 +3,22 @@ import { motion } from 'framer-motion'
 import RaceCar from './RaceCar'
 import { DEPARTMENTS, getCarColor } from '../config'
 
-const RANK_MEDALS = ['🥇', '🥈', '🥉']
-const CAR_SCALE   = 0.66   // Tamaño del auto en la pista
-
-// ── Avatar ────────────────────────────────────────────
-function Avatar({ name, color }) {
+// ── Avatar with photo support ─────────────────────────────
+function AvatarPhoto({ name, color, avatar }) {
+  const [imgError, setImgError] = useState(false)
   const initials = name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase()
+
+  if (avatar && !imgError) {
+    return (
+      <img
+        src={avatar}
+        alt={name}
+        onError={() => setImgError(true)}
+        className="w-8 h-8 rounded-full flex-shrink-0 object-cover"
+        style={{ border: `1.5px solid ${color}55` }}
+      />
+    )
+  }
   return (
     <div
       className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-orbitron font-bold flex-shrink-0"
@@ -18,6 +28,9 @@ function Avatar({ name, color }) {
     </div>
   )
 }
+
+const RANK_MEDALS = ['🥇', '🥈', '🥉']
+const CAR_SCALE   = 0.66   // Tamaño del auto en la pista
 
 // ── Contador animado ──────────────────────────────────
 function AnimatedCount({ value, color }) {
@@ -96,7 +109,7 @@ export default function AgentRaceRow({ agent, rank, isNew }) {
             ? <span className="text-lg leading-none">{RANK_MEDALS[rank - 1]}</span>
             : <span className="font-orbitron text-xs text-white/25">#{rank}</span>}
         </div>
-        <Avatar name={agent.name} color={color} />
+        <AvatarPhoto name={agent.name} color={color} avatar={agent.avatar} />
         <div className="min-w-0">
           <div className="font-rajdhani font-semibold text-sm text-white/85 truncate leading-tight">
             {agent.name.split(' ')[0]}
@@ -219,7 +232,7 @@ export default function AgentRaceRow({ agent, rank, isNew }) {
 
           {/* Auto */}
           <div className={progress > 0 ? 'car-bobble' : ''}>
-            <RaceCar color={color} blazing={pulse} scale={CAR_SCALE} />
+            <RaceCar color={color} blazing={pulse} scale={CAR_SCALE} avatar={agent.avatar} />
           </div>
         </motion.div>
 

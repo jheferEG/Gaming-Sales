@@ -1,8 +1,9 @@
 /**
  * RaceCar — SVG de carro F1/IndyCar con piloto visible,
  * ruedas girando (CSS), efecto de velocidad y partículas de escape.
+ * Si se pasa `avatar` (URL de foto de perfil), se muestra como piloto.
  */
-export default function RaceCar({ color = '#ffffff', blazing = false, scale = 1 }) {
+export default function RaceCar({ color = '#ffffff', blazing = false, scale = 1, avatar = null }) {
   const id = `car-${color.replace(/[^a-z0-9]/gi, 'x')}`
   const W = Math.round(130 * scale)
   const H = Math.round(52 * scale)
@@ -45,6 +46,11 @@ export default function RaceCar({ color = '#ffffff', blazing = false, scale = 1 
           <stop offset="0%"   stopColor="rgba(255,255,255,0.45)" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
+
+        {/* Clip path for pilot photo */}
+        <clipPath id={`${id}-pilot-clip`}>
+          <ellipse cx="68" cy="10" rx="7.5" ry="7" />
+        </clipPath>
 
         {/* Visor glass */}
         <linearGradient id={`${id}-visor`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -104,19 +110,29 @@ export default function RaceCar({ color = '#ffffff', blazing = false, scale = 1 
       {/* Racing suit torso */}
       <ellipse cx="68" cy="15" rx="8.5" ry="6" fill="#111827" />
 
-      {/* Helmet shell */}
+      {/* Helmet shell — always visible as base/outline */}
       <ellipse cx="68" cy="10" rx="7.5" ry="7"
                fill={color} filter={`url(#${id}-glow)`} />
-      {/* Helmet highlight */}
-      <ellipse cx="68" cy="10" rx="7.5" ry="7"
-               fill={`url(#${id}-helm)`} />
 
-      {/* Helmet color stripe (racing livery) */}
-      <rect x="65.5" y="4" width="5" height="12" rx="2.5" fill="rgba(255,255,255,0.18)" />
+      {/* Pilot: photo or colored helmet highlight */}
+      {avatar ? (
+        <image
+          href={avatar}
+          x="60.5" y="3" width="15" height="14"
+          clipPath={`url(#${id}-pilot-clip)`}
+          preserveAspectRatio="xMidYMid slice"
+        />
+      ) : (
+        <>
+          <ellipse cx="68" cy="10" rx="7.5" ry="7"
+                   fill={`url(#${id}-helm)`} />
+          <rect x="65.5" y="4" width="5" height="12" rx="2.5" fill="rgba(255,255,255,0.18)" />
+        </>
+      )}
 
-      {/* Visor opening */}
+      {/* Visor overlay — always shown for racing look */}
       <path d="M62 8.5 Q68 5.5 74 8.5 Q74 13.5 68 15 Q62 13.5 62 8.5 Z"
-            fill={`url(#${id}-visor)`} opacity="0.9" />
+            fill={`url(#${id}-visor)`} opacity={avatar ? 0.55 : 0.9} />
 
       {/* Visor reflection streak */}
       <path d="M63.5 8.5 Q67 7 71.5 8.5 L71 10 Q67.5 9 64 10 Z"

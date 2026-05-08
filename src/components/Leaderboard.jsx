@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DEPARTMENTS, getCarColor } from '../config'
 
@@ -12,6 +13,31 @@ function MiniBar({ pct, color }) {
         transition={{ duration: 1, ease: 'easeOut' }}
         style={{ background: color }}
       />
+    </div>
+  )
+}
+
+function AgentAvatar({ name, color, avatar }) {
+  const [imgError, setImgError] = useState(false)
+  const initials = name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase()
+
+  if (avatar && !imgError) {
+    return (
+      <img
+        src={avatar}
+        alt={name}
+        onError={() => setImgError(true)}
+        className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+        style={{ border: `1.5px solid ${color}55` }}
+      />
+    )
+  }
+  return (
+    <div
+      className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-orbitron font-bold flex-shrink-0"
+      style={{ background: `${color}18`, border: `1.5px solid ${color}44`, color }}
+    >
+      {initials}
     </div>
   )
 }
@@ -34,11 +60,12 @@ export default function Leaderboard({ agents, tabColor = '#6366f1' }) {
         </span>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         <AnimatePresence>
           {sorted.map((agent, i) => {
             const color = agent.carColor ?? getCarColor(agent.id)
             const pct = Math.min((agent.deals / agent.goal) * 100, 100)
+            const deptCfg = DEPARTMENTS[agent.department]
             return (
               <motion.div
                 key={agent.id}
@@ -47,7 +74,7 @@ export default function Leaderboard({ agents, tabColor = '#6366f1' }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ delay: i * 0.04, type: 'spring', bounce: 0.2 }}
-                className="flex items-center gap-2.5"
+                className="flex items-center gap-2"
               >
                 {/* Rank */}
                 <div className="w-6 text-center text-sm flex-shrink-0">
@@ -58,12 +85,30 @@ export default function Leaderboard({ agents, tabColor = '#6366f1' }) {
                   )}
                 </div>
 
-                {/* Name + bar */}
+                {/* Avatar */}
+                <AgentAvatar name={agent.name} color={color} avatar={agent.avatar} />
+
+                {/* Name + dept + bar */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-rajdhani font-semibold text-xs text-white/80 truncate">
-                      {agent.name.split(' ')[0]} {agent.name.split(' ')[1]?.[0]}.
-                    </span>
+                  <div className="flex items-center justify-between mb-1 gap-1">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="font-rajdhani font-semibold text-xs text-white/80 truncate">
+                        {agent.name.split(' ')[0]} {agent.name.split(' ')[1]?.[0]}.
+                      </span>
+                      {/* Department badge */}
+                      {deptCfg && (
+                        <span
+                          className="font-orbitron text-[8px] px-1.5 py-0.5 rounded-full flex-shrink-0 leading-none"
+                          style={{
+                            background: `${deptCfg.color}22`,
+                            color: `${deptCfg.color}cc`,
+                            border: `1px solid ${deptCfg.color}33`,
+                          }}
+                        >
+                          {deptCfg.name}
+                        </span>
+                      )}
+                    </div>
                     <span className="font-orbitron text-[10px] flex-shrink-0 ml-1" style={{ color }}>
                       {agent.deals}
                     </span>
