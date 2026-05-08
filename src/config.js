@@ -17,7 +17,7 @@ export const DEPARTMENTS = {
     glow: 'rgba(168,85,247,0.45)',
     icon: '💜',
     defaultGoal: 200,
-    bitrixDeptIds: [], // ← llena con IDs de Bitrix24
+    bitrixDeptIds: [620, 604], // SALES LIFE, C+P+R LIFE - ACA
   },
   auto: {
     key: 'auto',
@@ -28,7 +28,7 @@ export const DEPARTMENTS = {
     icon: '🚗',
     group: 'pc',
     defaultGoal: 300,
-    bitrixDeptIds: [],
+    bitrixDeptIds: [748], // SALE ACC (Auto-Home-Comercial)
   },
   casa: {
     key: 'casa',
@@ -39,7 +39,7 @@ export const DEPARTMENTS = {
     icon: '🏠',
     group: 'pc',
     defaultGoal: 200,
-    bitrixDeptIds: [],
+    bitrixDeptIds: [], // agrupado con auto (SALE ACC)
   },
   comercial: {
     key: 'comercial',
@@ -50,17 +50,17 @@ export const DEPARTMENTS = {
     icon: '🏢',
     group: 'pc',
     defaultGoal: 350,
-    bitrixDeptIds: [],
+    bitrixDeptIds: [], // agrupado con auto (SALE ACC)
   },
   medicare: {
     key: 'medicare',
     name: 'Medicare',
-    label: 'Medicare',
+    label: 'My Health Programs',
     color: '#10B981',
     glow: 'rgba(16,185,129,0.45)',
     icon: '💊',
     defaultGoal: 150,
-    bitrixDeptIds: [],
+    bitrixDeptIds: [608, 612, 812, 636, 810], // SALES MHP, TEAM BYE MHP, TEAM BYE MHP I, TEAM ACTIVADORES MHP, TEAM ACTIVADORES - BYE
   },
   aca: {
     key: 'aca',
@@ -70,7 +70,7 @@ export const DEPARTMENTS = {
     glow: 'rgba(249,115,22,0.45)',
     icon: '🏥',
     defaultGoal: 200,
-    bitrixDeptIds: [],
+    bitrixDeptIds: [624], // SALES ACA
   },
 }
 
